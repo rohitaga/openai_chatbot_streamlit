@@ -5,10 +5,21 @@ import streamlit as st
 
 with st.sidebar:
     st.title('🤖💬 OpenAI Chatbot')
-    if 'OPENAI_API_KEY' in st.secrets:
-        st.success('API key already provided!', icon='✅')
-        openai.api_key = st.secrets['OPENAI_API_KEY']
+    # Check for API key in secrets.toml (commented out for now)
+    # try:
+    #     if 'OPENAI_API_KEY' in st.secrets:
+    #         st.success('API key already provided!', icon='✅')
+    #         openai.api_key = st.secrets['OPENAI_API_KEY']
+    # except FileNotFoundError:
+    #     st.warning('No secrets.toml file found.', icon='⚠️')
+
+    # Ask user for API key
+    openai.api_key = st.text_input('Enter OpenAI API token:', type='password')
+    if not (openai.api_key and openai.api_key.startswith('sk-') and len(openai.api_key)==51):
+        st.warning('Please enter your credentials!', icon='⚠️')
     else:
+        st.success('Proceed to entering your prompt message!', icon='👉')
+
         openai.api_key = st.text_input('Enter OpenAI API token:', type='password')
         if not (openai.api_key.startswith('sk-') and len(openai.api_key)==51):
             st.warning('Please enter your credentials!', icon='⚠️')
